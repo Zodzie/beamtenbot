@@ -10,6 +10,8 @@ import java.util.Set;
 
 import org.jibble.pircbot.PircBot;
 
+import de.eidotter.beamtenbot.ts3channelquery.Channel;
+import de.eidotter.beamtenbot.ts3channelquery.ConnectionProperties;
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 

@@ -7,6 +7,8 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 
+import de.eidotter.beamtenbot.ts3channelquery.ConnectionProperties;
+
 public class Main {
 
 	/**

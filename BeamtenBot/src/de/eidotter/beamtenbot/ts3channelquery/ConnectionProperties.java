@@ -1,4 +1,6 @@
-package de.eidotter.beamtenbot;
+package de.eidotter.beamtenbot.ts3channelquery;
+
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class ConnectionProperties {
 	private String ircHostname;
@@ -63,6 +65,18 @@ public class ConnectionProperties {
 	}
 	public void setTs3Password(String ts3Password) {
 		this.ts3Password = ts3Password;
+	}
+	public void fillConfiguration(PropertiesConfiguration prop) {
+		this.setIrcHostname(prop.getString("irc_hostname"));
+		this.setIrcPassword(prop.getString("irc_password"));
+		this.setIrcPort(prop.getInt("irc_port", 6667));
+		
+		this.setTs3Ip(prop.getString("ts3_ip"));
+		this.setTs3Port(prop.getInt("ts3_port"));
+		this.setTs3Password(prop.getString("ts3_pw", null));
+		this.setTs3ServerQueryName(prop.getString("ts3_serverquery_name"));
+		this.setTs3ServerQueryPassword(prop.getString("ts3_serverquery_password"));
+		this.setTs3ServerQueryPort(prop.getInt("ts3_serverquery_port"));
 	}
 	
 	
