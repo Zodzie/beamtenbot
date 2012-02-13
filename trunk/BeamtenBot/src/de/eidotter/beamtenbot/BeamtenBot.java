@@ -13,15 +13,13 @@ import de.eidotter.beamtenbot.ts3channelquery.TeamspeakChannelQuery;
 
 public class BeamtenBot extends PircBot{
 	private static boolean DEBUG = false;
-	private ConnectionProperties properties;
 	public static final SimpleDateFormat SDF_GERMAN = new SimpleDateFormat("HH:mm' Uhr, 'dd.MM.yyyy");
 	private FragenBot fragenBot;
 	private TeamspeakChannelQuery tsQuery;
 	
 	public BeamtenBot(boolean debug, ConnectionProperties properties){
-		this.properties = properties;
 		DEBUG = debug;
-		this.setName("BeamtenBot");
+		this.setName("BeamtenBotMichi");
 	}
 
 	
@@ -77,13 +75,14 @@ public class BeamtenBot extends PircBot{
 	protected void onPrivateMessage(String sender, String login,
 			String hostname, String message) {
 		
-		//füge mit Befehl Fragen hinzu---------------------------------------------
-				fragenBot.getFragenKatalog().addQuestion(message,sender,this);
-		//-------------------------------------------------------------------------
 		
 		// Teamspeak-Channelabfrage
 		if(message.equals("ts3")){
 			this.channelQuery(sender);
+		} else {
+			//füge mit Befehl Fragen hinzu---------------------------------------------
+			fragenBot.getFragenKatalog().addQuestion(message,sender,this);
+			//-------------------------------------------------------------------------
 		}
 	}
 

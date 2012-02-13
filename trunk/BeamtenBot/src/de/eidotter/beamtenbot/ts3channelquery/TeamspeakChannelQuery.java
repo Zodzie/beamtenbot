@@ -58,7 +58,7 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 		}
 		qry.setTeamspeakActionListener(this);
 		qry.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, 0);
-		return false;
+		return true;
 	}
 
 	@Override
