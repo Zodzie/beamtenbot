@@ -1,4 +1,4 @@
-package de.drkarl.qestionAPI.fragenKatalog;
+package de.drkarl.questionAPI.fragenKatalog;
 
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -29,7 +29,7 @@ public class FragenKatalog {
 
 
 	//Liste mit allen Fragen
-	LinkedList<Frage> fragen = new LinkedList<Frage>();
+	public LinkedList<Frage> fragen = new LinkedList<Frage>();
 
 	public LinkedList<Frage> getFragen() {
 		return fragen;

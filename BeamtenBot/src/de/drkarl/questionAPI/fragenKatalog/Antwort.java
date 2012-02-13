@@ -1,8 +1,8 @@
-package de.drkarl.qestionAPI.fragenKatalog;
+package de.drkarl.questionAPI.fragenKatalog;
 
 public class Antwort {
 
-	String antwort;
+	public String antwort;
 
 	public Antwort(String antwort) {
 		super();

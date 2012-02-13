@@ -6,7 +6,7 @@ import java.util.Date;
 import org.apache.commons.configuration.ConfigurationException;
 import org.jibble.pircbot.PircBot;
 
-import de.drkarl.qestionAPI.FragenBot;
+import de.drkarl.questionAPI.FragenBot;
 import de.eidotter.beamtenbot.ts3channelquery.ConnectionProperties;
 import de.eidotter.beamtenbot.ts3channelquery.TeamspeakChannelQuery;
 
@@ -37,7 +37,7 @@ public class BeamtenBot extends PircBot{
 			String hostname, String message) {
 		
 		//prüfe Fragen und Antworten------------------------------------------
-		fragenBot.questionAndAnswer(message, channel, this);
+		fragenBot.questionAndAnswer(message, channel,sender, this);
 		//--------------------------------------------------------------------
 		
 		if(DEBUG)	System.out.printf("Incoming Message in Channel %s from %s: %s\n",channel, sender, message);
