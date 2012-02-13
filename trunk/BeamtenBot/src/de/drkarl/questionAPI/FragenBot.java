@@ -74,7 +74,7 @@ public class FragenBot {
 	
 	
 	public void questionAndAnswer(String message, String channel,String sender, PircBot myBot){
-		askQuestion(message, channel, myBot);
+		askQuestion(message, channel, myBot,false);
 		checkAnswer(message, channel, sender, myBot);
 		printPunkteVerwaltung(message, channel, myBot);
 	}
@@ -85,8 +85,10 @@ public class FragenBot {
 					if(message.equalsIgnoreCase(antwort.getAntwort()) || message.equalsIgnoreCase(antwort.getAntwort())){
 						//richtige Antwort
 						punkteVerwaltung.rewardUser(sender, 1);
-						myBot.sendMessage(channel, Colors.BOLD + Colors.RED + "richtige Antwort");
+						myBot.sendMessage(channel, Colors.BOLD + Colors.GREEN + "richtige Antwort");
 						solved = true;
+						askQuestion(message, channel, myBot, true);
+						
 					}
 				}
 			}
@@ -103,8 +105,8 @@ public class FragenBot {
 		}
 	}
 	
-	public void askQuestion(String message, String channel, PircBot myBot){
-		if(message.equalsIgnoreCase("-frage")||message.equalsIgnoreCase("-f")){
+	public void askQuestion(String message, String channel, PircBot myBot, boolean passVaidation){
+		if(message.equalsIgnoreCase("-frage")||message.equalsIgnoreCase("-f")|| passVaidation){
 			if(solved == true){
 				myBot.sendMessage(channel, Colors.BOLD + Colors.RED +  getRandomFrage().getFrage());
 			}else{

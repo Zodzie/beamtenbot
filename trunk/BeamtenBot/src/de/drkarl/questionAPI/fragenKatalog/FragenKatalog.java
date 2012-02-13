@@ -101,7 +101,7 @@ public class FragenKatalog {
 	 
 	 public void addQuestion(String message,String sender,PircBot myBot) {
 			//überprüfen des message Pattern
-			Pattern p = Pattern.compile("addQuestion \"[\\wäÄöÖüÜß\\\\?\\s]+\" \"[\\wäÄöÖüÜß\\\\?\\s]+\"");
+			Pattern p = Pattern.compile("addQuestion \"[\\wäÄöÖüÜß\\\\?\\s\\\\.\\\\-\\\\*\\\\']+\" \"[\\wäÄöÖüÜß\\\\?\\s\\\\.\\\\-\\\\*\\\\']+\"");
 			Matcher m = p.matcher(message);
 			boolean meetRegEx = m.matches();
 			if(meetRegEx){
@@ -132,6 +132,7 @@ public class FragenKatalog {
 				this.addFrage(frage);
 				}
 				this.writeToXML();
+				myBot.sendMessage(sender, Colors.GREEN +  "Frage Hinzugefügt");
 				System.out.println(this.toXML());
 			}else{
 				myBot.sendMessage(sender, Colors.BOLD + Colors.RED +  "Falsche Syntax --> addQuestion \"xx\" \"yy\"");
