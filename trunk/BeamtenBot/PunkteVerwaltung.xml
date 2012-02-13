@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<punkteVerwaltung>
+<user>
+<name>Hans</name>
+<punkte>33</punkte>
+</user>
+<user>
+<name>Hans2</name>
+<punkte>323</punkte>
+</user>
+</punkteVerwaltung>
