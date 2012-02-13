@@ -31,5 +31,18 @@ public class Channel {
 	public void addUser(String user) {
 		this.users.add(user);		
 	}
+	
+	public String toString(){
+		StringBuilder sb = new StringBuilder(this.getChannelName());
+		sb.append(": ");
+		for (int i = 0; i < this.users.size(); i++) {
+			if(i == this.users.size() - 1){
+				sb.append(this.users.get(i)).append("\n");
+			} else {
+				sb.append(this.users.get(i)).append(", ");
+			}
+		}
+		return sb.toString();
+	}
 
 }
