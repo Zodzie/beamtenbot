@@ -36,7 +36,7 @@ public class Main {
 		bot.setVerbose(true);
 		bot.connect(prop.getIrcHostname(), prop.getIrcPort(), prop.getIrcPassword());
 		//bot.joinChannel("#beamtendisco", "hwu4711");
-		bot.joinChannel("#bottest");
+		bot.joinChannel("#lancenter");
 	}
 
 }
