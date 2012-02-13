@@ -10,6 +10,8 @@ import java.util.Set;
 
 import org.jibble.pircbot.PircBot;
 
+
+import de.drkarl.qestionAPI.FragenBot;
 import de.eidotter.beamtenbot.ts3channelquery.Channel;
 import de.eidotter.beamtenbot.ts3channelquery.ConnectionProperties;
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
@@ -22,6 +24,8 @@ public class BeamtenBot extends PircBot implements TeamspeakActionListener {
 	public static final SimpleDateFormat SDF_GERMAN = new SimpleDateFormat("HH:mm' Uhr, 'dd.MM.yyyy");
 	private JTS3ServerQuery qry;
 	private HashMap<String, Integer> userInChannel;
+	private FragenBot fragenBot;
+	
 	public BeamtenBot(boolean debug, ConnectionProperties properties){
 		this.properties = properties;
 		userInChannel = new HashMap<String, Integer>();
@@ -45,9 +49,19 @@ public class BeamtenBot extends PircBot implements TeamspeakActionListener {
 		qry.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, 0);
 	}
 
+	
+	protected void onConnect() {
+		super.onConnect();
+		fragenBot = new FragenBot();
+	}
 	@Override
 	protected void onMessage(String channel, String sender, String login,
 			String hostname, String message) {
+		
+		//prüfe Fragen und Antworten------------------------------------------
+		fragenBot.questionAndAnswer(message, channel, this);
+		//--------------------------------------------------------------------
+		
 		if(DEBUG)	System.out.printf("Incoming Message in Channel %s from %s: %s\n",channel, sender, message);
 		if(message.equals("thetime")){
 			this.sendMessage(channel, SDF_GERMAN.format(new Date()));
@@ -128,6 +142,11 @@ public class BeamtenBot extends PircBot implements TeamspeakActionListener {
 	@Override
 	protected void onPrivateMessage(String sender, String login,
 			String hostname, String message) {
+		
+		//füge mit Befehl Fragen hinzu---------------------------------------------
+				fragenBot.getFragenKatalog().addQuestion(message,sender,this);
+		//-------------------------------------------------------------------------
+				
 		//if(message.equals("ts3")){
 		//	this.channelQuery(sender);
 		//}

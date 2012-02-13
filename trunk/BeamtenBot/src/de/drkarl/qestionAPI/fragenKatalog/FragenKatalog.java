@@ -1,4 +1,4 @@
-package QestionAPI;
+package de.drkarl.qestionAPI.fragenKatalog;
 
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -69,10 +69,12 @@ public class FragenKatalog {
 	  */
 	 public void initParse(){
 		 try {
+			 	this.fragen = new LinkedList<Frage>();
 				InputSource in = new InputSource(new FileInputStream("FragenKatalog.xml"));
 				Document doc = new SAXBuilder().build(in);
 				Element root = doc.getRootElement();
 				List<Element> elementList = root.getChildren("question");
+				
 				for (Element question : elementList) {
 					//erstelle LinkedList mit antworten
 					List<Element> antwortenList = question.getChildren("antwort");
@@ -99,7 +101,7 @@ public class FragenKatalog {
 	 
 	 public void addQuestion(String message,String sender,PircBot myBot) {
 			//überprüfen des message Pattern
-			Pattern p = Pattern.compile("addQuestion \"[\\wäÄöÖüÜß?\\s]+\" \"[\\wäÄöÖüÜß?\\s]+\"");
+			Pattern p = Pattern.compile("addQuestion \"[\\wäÄöÖüÜß\\\\?\\s]+\" \"[\\wäÄöÖüÜß\\\\?\\s]+\"");
 			Matcher m = p.matcher(message);
 			boolean meetRegEx = m.matches();
 			if(meetRegEx){
@@ -137,7 +139,9 @@ public class FragenKatalog {
 		}
 	 	
 	 	
-		
-		
-	
+		public static void main(String[] args) {
+			FragenKatalog f = new FragenKatalog();
+			System.out.println(f.toXML());
+			
+		}
 }

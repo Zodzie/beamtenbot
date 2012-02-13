@@ -1,7 +1,11 @@
-package QestionAPI;
+package de.drkarl.qestionAPI;
 
 import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.PircBot;
+
+import de.drkarl.qestionAPI.fragenKatalog.Antwort;
+import de.drkarl.qestionAPI.fragenKatalog.Frage;
+import de.drkarl.qestionAPI.fragenKatalog.FragenKatalog;
 
 public class FragenBot {
 
@@ -36,7 +40,7 @@ public class FragenBot {
 	
 	public Frage getRandomFrage(){
 		int randomIndex = getRandomNumber(fragenKatalog.getFragen().size());
-		aktuelleFrage = fragenKatalog.fragen.get(randomIndex);
+		aktuelleFrage = fragenKatalog.getFragen().get(randomIndex);
 		solved = false;
 		return aktuelleFrage;
 	}
