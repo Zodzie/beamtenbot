@@ -44,5 +44,17 @@ public class Channel {
 		}
 		return sb.toString();
 	}
+	
+	public String getUserString(){
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < this.getUsers().size(); i++) {
+			if(i == this.getUsers().size() - 1){
+				sb.append(this.getUsers().get(i));
+			} else {
+				sb.append(this.getUsers().get(i)).append(", ");
+			}
+		}
+		return sb.toString();
+	}
 
 }

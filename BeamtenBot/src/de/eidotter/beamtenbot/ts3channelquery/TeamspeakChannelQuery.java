@@ -116,6 +116,11 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 		}		
 	}
 	
+	
+	/**
+	 * Liefert einen String mit allen aktiven Channels samt Nutzer.
+	 * @return	String
+	 */
 	public String getActiveChannelsString(){
 		StringBuilder sb = new StringBuilder();
 		List<Channel> activeChannels = null;
@@ -130,6 +135,19 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 			}
 			return sb.toString();
 		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Liefert eine Liste mit aktiven Channels oder null.
+	 * @return	List<Channel>
+	 */
+	public List<Channel> getActiveChannelList(){
+		try {
+			return this.getActiveChannels();
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

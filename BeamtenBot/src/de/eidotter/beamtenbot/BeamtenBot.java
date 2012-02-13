@@ -1,25 +1,24 @@
 package de.eidotter.beamtenbot;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.PircBot;
 
 import de.drkarl.questionAPI.FragenBot;
-import de.eidotter.beamtenbot.ts3channelquery.ConnectionProperties;
+import de.eidotter.beamtenbot.ts3channelquery.Channel;
 import de.eidotter.beamtenbot.ts3channelquery.TeamspeakChannelQuery;
 
 
 public class BeamtenBot extends PircBot{
 	private static boolean DEBUG = false;
-	public static final SimpleDateFormat SDF_GERMAN = new SimpleDateFormat("HH:mm' Uhr, 'dd.MM.yyyy");
 	private FragenBot fragenBot;
 	private TeamspeakChannelQuery tsQuery;
 	
-	public BeamtenBot(boolean debug){
+	public BeamtenBot(boolean debug, String nick){
 		DEBUG = debug;
-		this.setName("bot");
+		this.setName(nick);
 	}
 
 	
@@ -35,11 +34,14 @@ public class BeamtenBot extends PircBot{
 	@Override
 	protected void onMessage(String channel, String sender, String login,
 			String hostname, String message) {
-		
-		//prüfe Fragen und Antworten------------------------------------------
-		fragenBot.questionAndAnswer(message, channel,sender, this);
-		//--------------------------------------------------------------------
-		
+		// Teamspeak-Channelabfrage
+		if(message.equals("ts3")){
+			this.channelQuery(channel);
+		} else {
+			//prüfe Fragen und Antworten------------------------------------------
+			fragenBot.questionAndAnswer(message, channel,sender, this);
+			//--------------------------------------------------------------------
+		}		
 		if(DEBUG)	System.out.printf("Incoming Message in Channel %s from %s: %s\n",channel, sender, message);
 	}
 	
@@ -49,15 +51,21 @@ public class BeamtenBot extends PircBot{
 	 */
 	private void channelQuery(String sender) {
 		if(tsQuery != null){
-			String active = tsQuery.getActiveChannelsString();
-			if(active != null){
-				this.sendMessage(sender, active);
+//			String active = tsQuery.getActiveChannelsString();
+//			if(active != null){
+//				this.sendMessage(sender, active);
+//			} else {
+//				this.sendMessage(sender, "Zurzeit nix los aufm TS3!");
+//			}
+			List<Channel> channelList = tsQuery.getActiveChannelList();
+			if(channelList != null){
+				for (Channel channel : channelList) {
+					this.sendMessage(sender, Colors.BOLD + Colors.BLUE + channel.getChannelName() + ": " + Colors.NORMAL + channel.getUserString());
+				}
 			} else {
-				this.sendMessage(sender, "Zurzeit nix los aufm TS3!");
+				this.sendMessage(sender, Colors.BOLD + Colors.BLUE + "Zurzeit keine User auf dem TS");
 			}
-		}
-		
-		
+		}		
 	}
 
 	@Override
