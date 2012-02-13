@@ -1,4 +1,4 @@
-package QestionAPI;
+package de.drkarl.qestionAPI.fragenKatalog;
 
 public class Antwort {
 
