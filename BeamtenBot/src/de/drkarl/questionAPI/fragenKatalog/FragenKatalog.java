@@ -132,8 +132,7 @@ public class FragenKatalog {
 				this.addFrage(frage);
 				}
 				this.writeToXML();
-				myBot.sendMessage(sender, Colors.GREEN +  "Frage Hinzugefügt");
-				System.out.println(this.toXML());
+				myBot.sendMessage(sender, Colors.GREEN +  "Frage hinzugefügt");
 			}else{
 				myBot.sendMessage(sender, Colors.BOLD + Colors.RED +  "Falsche Syntax --> addQuestion \"xx\" \"yy\"");
 			}
