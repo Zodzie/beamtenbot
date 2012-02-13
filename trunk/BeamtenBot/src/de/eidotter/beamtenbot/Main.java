@@ -35,8 +35,8 @@ public class Main {
 		BeamtenBot bot = new BeamtenBot(true, prop);
 		bot.setVerbose(true);
 		bot.connect(prop.getIrcHostname(), prop.getIrcPort(), prop.getIrcPassword());
-		bot.joinChannel("#beamtendisco", "hwu4711");
-		//bot.joinChannel("#test");
+		//bot.joinChannel("#beamtendisco", "hwu4711");
+		bot.joinChannel("#bottest");
 	}
 
 }

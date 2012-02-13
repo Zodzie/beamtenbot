@@ -7,6 +7,7 @@ import de.drkarl.questionAPI.fragenKatalog.Antwort;
 import de.drkarl.questionAPI.fragenKatalog.Frage;
 import de.drkarl.questionAPI.fragenKatalog.FragenKatalog;
 import de.drkarl.questionAPI.punkteSystem.PunkteVerwaltung;
+import de.drkarl.questionAPI.punkteSystem.User;
 
 public class FragenBot {
 
@@ -19,9 +20,8 @@ public class FragenBot {
 
 	public FragenBot() {
 		super();
-		punkteVerwaltung = new PunkteVerwaltung();
+		this.punkteVerwaltung = new PunkteVerwaltung();
 		this.fragenKatalog = new FragenKatalog();
-		fragenKatalog.initParse();
 	}
 
 	public FragenKatalog getFragenKatalog() {
@@ -30,6 +30,30 @@ public class FragenBot {
 
 	public void setFragenKatalog(FragenKatalog fragenKatalog) {
 		this.fragenKatalog = fragenKatalog;
+	}
+	
+	public PunkteVerwaltung getPunkteVerwaltung() {
+		return punkteVerwaltung;
+	}
+
+	public void setPunkteVerwaltung(PunkteVerwaltung punkteVerwaltung) {
+		this.punkteVerwaltung = punkteVerwaltung;
+	}
+
+	public Frage getAktuelleFrage() {
+		return aktuelleFrage;
+	}
+
+	public void setAktuelleFrage(Frage aktuelleFrage) {
+		this.aktuelleFrage = aktuelleFrage;
+	}
+
+	public boolean isSolved() {
+		return solved;
+	}
+
+	public void setSolved(boolean solved) {
+		this.solved = solved;
 	}
 	
 	/**
@@ -52,9 +76,11 @@ public class FragenBot {
 	public void questionAndAnswer(String message, String channel,String sender, PircBot myBot){
 		askQuestion(message, channel, myBot);
 		checkAnswer(message, channel, sender, myBot);
+		printPunkteVerwaltung(message, channel, myBot);
 	}
 	
 	public void checkAnswer(String message, String channel, String sender, PircBot myBot){
+			if(aktuelleFrage!=null){
 				for (Antwort antwort : aktuelleFrage.antworten) {
 					if(message.equalsIgnoreCase(antwort.getAntwort()) || message.equalsIgnoreCase(antwort.getAntwort())){
 						//richtige Antwort
@@ -63,11 +89,17 @@ public class FragenBot {
 						solved = true;
 					}
 				}
+			}
 	}
 	
+	
+
 	public void printPunkteVerwaltung(String message, String channel, PircBot myBot){
 		if(message.equalsIgnoreCase("-stats")||message.equalsIgnoreCase("-s")){
-			myBot.sendMessage(channel, Colors.BOLD + Colors.RED + punkteVerwaltung.toString());
+			for (User user : this.getPunkteVerwaltung().getUserList() ) {
+				myBot.sendMessage(channel,  Colors.BLUE + user.toString());
+			}
+			
 		}
 	}
 	
@@ -81,5 +113,8 @@ public class FragenBot {
 		}
 	}
 	
-	
+	public static void main(String[] args) {
+		FragenBot f = new FragenBot();
+		System.out.println(f.punkteVerwaltung.toString());
+	}
 }
