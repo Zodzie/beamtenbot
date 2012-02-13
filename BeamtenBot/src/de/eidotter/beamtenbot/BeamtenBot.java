@@ -19,7 +19,7 @@ public class BeamtenBot extends PircBot{
 	
 	public BeamtenBot(boolean debug, ConnectionProperties properties){
 		DEBUG = debug;
-		this.setName("BeamtenBotMichi");
+		this.setName("bot");
 	}
 
 	
@@ -41,17 +41,6 @@ public class BeamtenBot extends PircBot{
 		//--------------------------------------------------------------------
 		
 		if(DEBUG)	System.out.printf("Incoming Message in Channel %s from %s: %s\n",channel, sender, message);
-		if(message.equals("thetime")){
-			this.sendMessage(channel, SDF_GERMAN.format(new Date()));
-		} else if(message.equals("hwu")){
-			this.sendMessage(channel, "HA");
-			this.sendMessage(channel, "WE");
-			this.sendMessage(channel, "UU");
-			this.sendMessage(channel, "HAWEUUUUUH!!!!!!!!!");
-		} else if(message.equals("wer ist der godfather of c++?")){
-			this.sendMessage(channel, "MICHI!!!");
-		}
-		
 	}
 	
 	/**

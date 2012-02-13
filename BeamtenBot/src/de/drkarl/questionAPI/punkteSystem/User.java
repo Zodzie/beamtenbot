@@ -37,7 +37,7 @@ public class User {
 	}
 	
 	public String toString() {
-		return getName()+": "+getPunkte().toString()+"\n";
+		return getName()+": "+getPunkte().toString();
 	}
 	
 	
