@@ -25,14 +25,7 @@ public class Main {
 		prop.setIrcPassword(prop2.getString("irc_password"));
 		prop.setIrcPort(prop2.getInt("irc_port", 6667));
 		
-		prop.setTs3Ip(prop2.getString("ts3_ip"));
-		prop.setTs3Port(prop2.getInt("ts3_port"));
-		prop.setTs3Password(prop2.getString("ts3_pw", null));
-		prop.setTs3ServerQueryName(prop2.getString("ts3_serverquery_name"));
-		prop.setTs3ServerQueryPassword(prop2.getString("ts3_serverquery_password"));
-		prop.setTs3ServerQueryPort(prop2.getInt("ts3_serverquery_port"));
-		
-		BeamtenBot bot = new BeamtenBot(true, prop);
+		BeamtenBot bot = new BeamtenBot(true);
 		bot.setVerbose(true);
 		bot.connect(prop.getIrcHostname(), prop.getIrcPort(), prop.getIrcPassword());
 		//bot.joinChannel("#beamtendisco", "hwu4711");

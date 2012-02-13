@@ -85,7 +85,7 @@ public class FragenBot {
 					if(message.equalsIgnoreCase(antwort.getAntwort()) || message.equalsIgnoreCase(antwort.getAntwort())){
 						//richtige Antwort
 						punkteVerwaltung.rewardUser(sender, 1);
-						myBot.sendMessage(channel, Colors.BOLD + Colors.GREEN + "richtige Antwort");
+						myBot.sendMessage(channel, Colors.BOLD + Colors.GREEN + "Richtige Antwort: " + antwort.getAntwort() + "Gelöst von: " + sender);
 						solved = true;
 						askQuestion(message, channel, myBot, true);
 						
