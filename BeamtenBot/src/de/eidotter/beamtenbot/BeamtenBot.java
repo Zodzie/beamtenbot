@@ -17,7 +17,7 @@ public class BeamtenBot extends PircBot{
 	private FragenBot fragenBot;
 	private TeamspeakChannelQuery tsQuery;
 	
-	public BeamtenBot(boolean debug, ConnectionProperties properties){
+	public BeamtenBot(boolean debug){
 		DEBUG = debug;
 		this.setName("bot");
 	}
