@@ -1,4 +1,4 @@
-package de.eidotter.beamtenbot;
+package de.eidotter.beamtenbot.ts3channelquery;
 
 import java.util.ArrayList;
 import java.util.List;
