@@ -19,17 +19,29 @@ public class Main {
 	 * @throws ConfigurationException 
 	 */
 	public static void main(String[] args) throws NickAlreadyInUseException, IOException, IrcException, ConfigurationException {
-		PropertiesConfiguration prop2 = new PropertiesConfiguration("connection.properties");		
+		PropertiesConfiguration prop2 = new PropertiesConfiguration("connection.properties");
+		prop2.setListDelimiter(';');
 		ConnectionProperties prop = new ConnectionProperties();
 		prop.setIrcHostname(prop2.getString("irc_hostname"));
 		prop.setIrcPassword(prop2.getString("irc_password"));
 		prop.setIrcPort(prop2.getInt("irc_port", 6667));
+		prop.setBotNick(prop2.getString("bot_nick", "bot"));
+		prop.setChannelList(prop2.getString("channel_list"));
 		
-		BeamtenBot bot = new BeamtenBot(true);
+		BeamtenBot bot = new BeamtenBot(true, prop.getBotNick());
 		bot.setVerbose(true);
 		bot.connect(prop.getIrcHostname(), prop.getIrcPort(), prop.getIrcPassword());
-		//bot.joinChannel("#beamtendisco", "hwu4711");
-		bot.joinChannel("#lancenter");
+		
+		// Join Channels
+		String[] channels = prop.getChannelList().split(";");
+		for (int i = 0; i < channels.length; i++) {
+			if(channels[i].contains(" ")){
+				String[] channelAndKey = channels[i].split(" ");
+				bot.joinChannel(channelAndKey[0], channelAndKey[1]);
+			} else {
+				bot.joinChannel(channels[i]);
+			}
+		}
 	}
 
 }

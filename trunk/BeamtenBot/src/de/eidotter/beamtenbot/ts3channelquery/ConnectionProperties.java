@@ -12,6 +12,8 @@ public class ConnectionProperties {
 	private String ts3ServerQueryName;
 	private String ts3ServerQueryPassword;
 	private int ts3ServerQueryPort;
+	private String botNick;
+	private String channelList;
 	public String getIrcHostname() {
 		return ircHostname;
 	}
@@ -77,6 +79,19 @@ public class ConnectionProperties {
 		this.setTs3ServerQueryName(prop.getString("ts3_serverquery_name"));
 		this.setTs3ServerQueryPassword(prop.getString("ts3_serverquery_password"));
 		this.setTs3ServerQueryPort(prop.getInt("ts3_serverquery_port"));
+	}
+	public String getBotNick() {
+		return botNick;
+	}
+	public void setBotNick(String botNick) {
+		this.botNick = botNick;
+	}
+	public void setChannelList(String string) {
+		this.channelList = string;		
+	}
+	
+	public String getChannelList(){
+		return this.channelList;
 	}
 	
 	
