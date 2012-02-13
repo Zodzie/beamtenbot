@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="D:/Studium/Java Programme/pircbot-1.5.0/pircbot-1.5.0/pircbot.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/Studium/Java Programme/pircbot-1.5.0/pircbot-1.5.0/javadocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/Studium/Java Programme/commons-configuration-1.8-bin/commons-configuration-1.8/commons-configuration-1.8.jar" sourcepath="D:/Studium/Java Programme/commons-configuration-1.8-bin/commons-configuration-1.8/commons-configuration-1.8-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/D:/Studium/Java Programme/commons-configuration-1.8-bin/commons-configuration-1.8/commons-configuration-1.8-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/Studium/Java Programme/commons-lang-2.6-bin/commons-lang-2.6/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="D:/Studium/Java Programme/commons-logging-1.1.1-bin/commons-logging-1.1.1/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/andjoy/jdom.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://jdom.org/docs/apidocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
