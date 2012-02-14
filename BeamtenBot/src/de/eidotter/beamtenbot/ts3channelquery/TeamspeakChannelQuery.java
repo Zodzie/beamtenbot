@@ -1,5 +1,6 @@
 package de.eidotter.beamtenbot.ts3channelquery;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,16 +22,24 @@ import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 public class TeamspeakChannelQuery implements TeamspeakActionListener {
 	private JTS3ServerQuery qry;
 	private boolean isConnectionReady = false;
-	// HashMap enthält Username -> Channelname
-	private HashMap<String, String> userInChannel;
+	// HashMap enthält User-ID -> Channel-ID
+	private HashMap<Integer, Integer> userIdInChannelId;
 	private static boolean DEBUG;
 	
 	public TeamspeakChannelQuery(String ts3Properties, boolean debug) throws ConfigurationException{
-		qry = new JTS3ServerQuery();
-		userInChannel = new HashMap<String, String>();
-		PropertiesConfiguration prop = new PropertiesConfiguration(ts3Properties);
-		isConnectionReady = this.prepareConnection(qry, prop);
 		DEBUG = debug;
+		qry = new JTS3ServerQuery();
+		userIdInChannelId = new HashMap<Integer, Integer>();
+		PropertiesConfiguration prop;
+		URL propertiesURL = this.getClass().getClassLoader().getResource(ts3Properties);
+		if(propertiesURL != null){
+			prop = new PropertiesConfiguration(propertiesURL);
+			isConnectionReady = this.prepareConnection(qry, prop);
+		} else {
+			isConnectionReady = false;
+			throw new ConfigurationException(ts3Properties + " konnte nicht gefunden werden!");			
+		}
+		
 	}
 
 	/**
@@ -73,63 +82,40 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 	@Override
 	public void teamspeakActionPerformed(String eventType, HashMap<String, String> eventInfo) {
 		if(eventType.equals("notifyclientmoved")){
-			if(DEBUG){
-				// Output Hashmap
-				this.outputHashMap(eventType, eventInfo);
-				System.out.println("Client moved.");
-			}
 			// Client moved
 			// Get Client ID
 			Integer clid = Integer.parseInt(eventInfo.get("clid"));
 			// Get Channel ID
 			Integer ctid = Integer.parseInt(eventInfo.get("ctid"));
-			// Get Username for Client ID
-			HashMap<String, String> hminfo = qry.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
-			String nick = hminfo.get("client_nickname");
-			// Get Channelname for Channel ID
-			hminfo = qry.getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, ctid);
-			String channel = hminfo.get("channel_name");			
-			
-			// Update/Add User in HashMap
-			userInChannel.put(nick, channel);	
-		} else if(eventType.equals("notifycliententerview")){
 			if(DEBUG){
 				// Output Hashmap
-				this.outputHashMap(eventType, eventInfo);	
-				System.out.println("Client joined Server.");
-			}
+				//this.outputHashMap(eventType, eventInfo);
+				System.out.println("Client with clid = " + clid + " moved to channel with ctid = " + ctid + ".");
+			}			
+			// Update/Add User in HashMap
+			userIdInChannelId.put(clid, ctid);
+		} else if(eventType.equals("notifycliententerview")){
 			// New Client joined Server
 			// Get Client ID
 			Integer clid = Integer.parseInt(eventInfo.get("clid"));
 			// Get Channel ID
 			Integer ctid = Integer.parseInt(eventInfo.get("ctid"));
-			// Get Username for Client ID
-			HashMap<String, String> hminfo = qry.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
-			String nick = hminfo.get("client_nickname");
-			// Get Channelname for Channel ID
-			hminfo = qry.getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, ctid);
-			String channel = hminfo.get("channel_name");			
-			
-			// Update/Add User in HashMap
-			userInChannel.put(nick, channel);
-		} else if(eventType.equals("notifyclientleftview")){
 			if(DEBUG){
 				// Output Hashmap
-				this.outputHashMap(eventType, eventInfo);
-				System.out.println("Client left Server.");
+				//this.outputHashMap(eventType, eventInfo);	
+				System.out.println("Client with clid = " + clid + " joined Server.");
 			}
+			// Update/Add User in HashMap
+			userIdInChannelId.put(clid, ctid);
+		} else if(eventType.equals("notifyclientleftview")){
 			// Client left Server
 			// Get Client ID
 			Integer clid = Integer.parseInt(eventInfo.get("clid"));
-			// Get Username for Client ID
-			HashMap<String, String> hminfo = qry.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
-			String nick = hminfo.get("client_nickname");
 			if(DEBUG){
-				System.out.println(nick + "has left the Server.");
-			}
-			
+				System.out.println("Client with clid = " + clid + " has left the Server.");
+			}			
 			// Delete User in HashMap
-			userInChannel.remove(nick);
+			userIdInChannelId.remove(clid);
 		}
 		
 	}
@@ -143,19 +129,21 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 	private List<Channel> getActiveChannels() throws Exception{
 		if(!this.isConnectionReady){
 			throw new Exception("Konnte keine Verbindung zum TS3-Server aufbauen.");
-		} else if(this.userInChannel.size() < 1){
+		} else if(this.userIdInChannelId.size() < 1){
 			return null;
 		} else {
 			// Liste erstellen
 			HashMap<String, Channel> channelMap = new HashMap<String, Channel>();
-			Set<Entry<String, String>> entrySet = userInChannel.entrySet();
-			for (Entry<String, String> entry : entrySet) {
-				if(channelMap.containsKey(entry.getValue())){
-					channelMap.get(entry.getValue()).addUser(entry.getKey());
+			Set<Entry<Integer, Integer>> entrySet = userIdInChannelId.entrySet();
+			for (Entry<Integer, Integer> entry : entrySet) {
+				String nick = this.getClientNick(entry.getKey(), qry);
+				String channel = this.getChannelName(entry.getValue(), qry);
+				if(channelMap.containsKey(channel)){
+					channelMap.get(channel).addUser(nick);
 				} else {
-					Channel tempChannel = new Channel(entry.getValue());
-					tempChannel.addUser(entry.getKey());
-					channelMap.put(entry.getValue(), tempChannel);
+					Channel tempChannel = new Channel(channel);
+					tempChannel.addUser(nick);
+					channelMap.put(channel, tempChannel);
 				}
 			}
 			
@@ -166,6 +154,36 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 			}
 			return channelList;
 		}		
+	}
+	
+	/**
+	 * Liefert für eine ClientID den Nicknamen des Clients.
+	 * @param clientId	ClientID
+	 * @param qry
+	 * @return Nickname
+	 * @throws Exception 
+	 */
+	private String getClientNick(int clientId, JTS3ServerQuery qry) throws Exception{
+		if(isConnectionReady){
+			return qry.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clientId).get("client_nickname");
+		} else {
+			throw new Exception("Konnte keine Verbindung zum TS3-Server aufbauen.");
+		}
+	}
+	
+	/**
+	 * Liefert für eine ChannelID den Namen des Channels.
+	 * @param channelId	ChannelID
+	 * @param qry
+	 * @return	Channelname
+	 * @throws Exception 
+	 */
+	private String getChannelName(int channelId, JTS3ServerQuery qry) throws Exception{
+		if(isConnectionReady){
+			return qry.getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, channelId).get("channel_name");
+		} else {
+			throw new Exception("Konnte keine Verbindung zum TS3-Server aufbauen.");
+		}
 	}
 	
 	
@@ -220,6 +238,7 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 	 * @param event	String Eventtyp
 	 * @param hm	HashMap Eventinfo
 	 */
+	@SuppressWarnings("unused")
 	private void outputHashMap(String event, HashMap<String, String> hm){
 		System.out.println("Event occured: " + event);
 		this.outputHashMap(hm);

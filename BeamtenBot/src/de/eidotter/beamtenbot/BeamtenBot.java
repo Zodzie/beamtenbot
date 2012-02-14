@@ -51,12 +51,6 @@ public class BeamtenBot extends PircBot{
 	 */
 	private void channelQuery(String sender) {
 		if(tsQuery != null){
-//			String active = tsQuery.getActiveChannelsString();
-//			if(active != null){
-//				this.sendMessage(sender, active);
-//			} else {
-//				this.sendMessage(sender, "Zurzeit nix los aufm TS3!");
-//			}
 			List<Channel> channelList = tsQuery.getActiveChannelList();
 			if(channelList != null){
 				for (Channel channel : channelList) {
@@ -65,7 +59,9 @@ public class BeamtenBot extends PircBot{
 			} else {
 				this.sendMessage(sender, Colors.BOLD + Colors.BLUE + "Zurzeit keine User auf dem TS");
 			}
-		}		
+		} else {
+			this.sendMessage(sender, Colors.BOLD + Colors.RED + "Zurzeit keine Verbindung zum TS");
+		}
 	}
 
 	@Override

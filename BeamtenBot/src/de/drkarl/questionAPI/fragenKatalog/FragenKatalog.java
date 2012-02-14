@@ -1,7 +1,7 @@
 package de.drkarl.questionAPI.fragenKatalog;
 
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -56,8 +56,9 @@ public class FragenKatalog {
 	  */
 	 public void writeToXML(){
 		 try {
-				BufferedWriter out = new BufferedWriter(new FileWriter("FragenKatalog.xml"));
-				out.write(this.toXML());
+				//BufferedWriter out = new BufferedWriter(new FileWriter("FragenKatalog.xml"));
+			 	BufferedWriter out = new BufferedWriter(new FileWriter(new File(this.getClass().getClassLoader().getResource("FragenKatalog.xml").getFile())));
+			 	out.write(this.toXML());
 				out.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -70,7 +71,8 @@ public class FragenKatalog {
 	 public void initParse(){
 		 try {
 			 	this.fragen = new LinkedList<Frage>();
-				InputSource in = new InputSource(new FileInputStream("FragenKatalog.xml"));
+				//InputSource in = new InputSource(new FileInputStream("FragenKatalog.xml"));
+			 	InputSource in = new InputSource(this.getClass().getClassLoader().getResourceAsStream("FragenKatalog.xml"));
 				Document doc = new SAXBuilder().build(in);
 				Element root = doc.getRootElement();
 				List<Element> elementList = root.getChildren("question");
