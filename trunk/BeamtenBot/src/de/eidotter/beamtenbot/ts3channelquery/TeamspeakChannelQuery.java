@@ -23,12 +23,14 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 	private boolean isConnectionReady = false;
 	// HashMap enthält Username -> Channelname
 	private HashMap<String, String> userInChannel;
+	private static boolean DEBUG;
 	
-	public TeamspeakChannelQuery(String ts3Properties) throws ConfigurationException{
+	public TeamspeakChannelQuery(String ts3Properties, boolean debug) throws ConfigurationException{
 		qry = new JTS3ServerQuery();
 		userInChannel = new HashMap<String, String>();
 		PropertiesConfiguration prop = new PropertiesConfiguration(ts3Properties);
 		isConnectionReady = this.prepareConnection(qry, prop);
+		DEBUG = debug;
 	}
 
 	/**
@@ -41,29 +43,41 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 		ConnectionProperties properties = new ConnectionProperties();
 		properties.fillConfiguration(prop);
 		if(!qry.connectTS3Query(properties.getTs3Ip(), properties.getTs3ServerQueryPort())){
-			System.out.println("Error: connectTS3Query");
-			System.out.println(qry.getLastError());
+			if(DEBUG){
+				System.out.println("Error: connectTS3Query");
+				System.out.println(qry.getLastError());
+			}
 			return false;
 		}
 		if(!qry.loginTS3(properties.getTs3ServerQueryName(), properties.getTs3ServerQueryPassword())){
-			System.out.println("Error: loginTS3");
-			System.out.println(qry.getLastError());
+			if(DEBUG){
+				System.out.println("Error: loginTS3");
+				System.out.println(qry.getLastError());
+			}
 			return false;
 		}
 		if(!qry.selectVirtualServer(1))
 		{
-			System.out.println("Error: selectVirtualServer");
-			System.out.println(qry.getLastError());
+			if(DEBUG){
+				System.out.println("Error: selectVirtualServer");
+				System.out.println(qry.getLastError());
+			}
 			return false;
 		}
 		qry.setTeamspeakActionListener(this);
 		qry.addEventNotify(JTS3ServerQuery.EVENT_MODE_CHANNEL, 0);
+		qry.addEventNotify(JTS3ServerQuery.EVENT_MODE_SERVER, 0);
 		return true;
 	}
 
 	@Override
 	public void teamspeakActionPerformed(String eventType, HashMap<String, String> eventInfo) {
 		if(eventType.equals("notifyclientmoved")){
+			if(DEBUG){
+				// Output Hashmap
+				this.outputHashMap(eventType, eventInfo);
+				System.out.println("Client moved.");
+			}
 			// Client moved
 			// Get Client ID
 			Integer clid = Integer.parseInt(eventInfo.get("clid"));
@@ -78,6 +92,44 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 			
 			// Update/Add User in HashMap
 			userInChannel.put(nick, channel);	
+		} else if(eventType.equals("notifycliententerview")){
+			if(DEBUG){
+				// Output Hashmap
+				this.outputHashMap(eventType, eventInfo);	
+				System.out.println("Client joined Server.");
+			}
+			// New Client joined Server
+			// Get Client ID
+			Integer clid = Integer.parseInt(eventInfo.get("clid"));
+			// Get Channel ID
+			Integer ctid = Integer.parseInt(eventInfo.get("ctid"));
+			// Get Username for Client ID
+			HashMap<String, String> hminfo = qry.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
+			String nick = hminfo.get("client_nickname");
+			// Get Channelname for Channel ID
+			hminfo = qry.getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, ctid);
+			String channel = hminfo.get("channel_name");			
+			
+			// Update/Add User in HashMap
+			userInChannel.put(nick, channel);
+		} else if(eventType.equals("notifyclientleftview")){
+			if(DEBUG){
+				// Output Hashmap
+				this.outputHashMap(eventType, eventInfo);
+				System.out.println("Client left Server.");
+			}
+			// Client left Server
+			// Get Client ID
+			Integer clid = Integer.parseInt(eventInfo.get("clid"));
+			// Get Username for Client ID
+			HashMap<String, String> hminfo = qry.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
+			String nick = hminfo.get("client_nickname");
+			if(DEBUG){
+				System.out.println(nick + "has left the Server.");
+			}
+			
+			// Delete User in HashMap
+			userInChannel.remove(nick);
 		}
 		
 	}
@@ -150,6 +202,27 @@ public class TeamspeakChannelQuery implements TeamspeakActionListener {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	/**
+	 * Gibt eine HashMap auf der Konsole aus.
+	 * @param hm	HashMap<String,String>
+	 */
+	private void outputHashMap(HashMap<String, String> hm){
+		Set<Entry<String, String>> entrySet = hm.entrySet();
+		for (Entry<String, String> entry : entrySet) {
+			System.out.println(entry.getKey() + ": " + entry.getValue());
+		}
+	}
+	
+	/**
+	 * Gibt eine HashMap einer Eventnotification auf der Konsole aus.
+	 * @param event	String Eventtyp
+	 * @param hm	HashMap Eventinfo
+	 */
+	private void outputHashMap(String event, HashMap<String, String> hm){
+		System.out.println("Event occured: " + event);
+		this.outputHashMap(hm);
 	}
 
 }

@@ -14,6 +14,7 @@ public class ConnectionProperties {
 	private int ts3ServerQueryPort;
 	private String botNick;
 	private String channelList;
+	private Boolean debugMode;
 	public String getIrcHostname() {
 		return ircHostname;
 	}
@@ -92,6 +93,12 @@ public class ConnectionProperties {
 	
 	public String getChannelList(){
 		return this.channelList;
+	}
+	public Boolean getDebugMode() {
+		return debugMode;
+	}
+	public void setDebugMode(Boolean debugMode) {
+		this.debugMode = debugMode;
 	}
 	
 	
