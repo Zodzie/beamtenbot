@@ -26,7 +26,7 @@ public class BeamtenBot extends PircBot{
 		super.onConnect();
 		fragenBot = new FragenBot();
 		try {
-			tsQuery = new TeamspeakChannelQuery("connection.properties");
+			tsQuery = new TeamspeakChannelQuery("connection.properties", DEBUG);
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
 		}

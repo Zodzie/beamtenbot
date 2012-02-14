@@ -27,9 +27,10 @@ public class Main {
 		prop.setIrcPort(prop2.getInt("irc_port", 6667));
 		prop.setBotNick(prop2.getString("bot_nick", "bot"));
 		prop.setChannelList(prop2.getString("channel_list"));
+		prop.setDebugMode(prop2.getBoolean("debug_mode", false));
 		
-		BeamtenBot bot = new BeamtenBot(true, prop.getBotNick());
-		bot.setVerbose(true);
+		BeamtenBot bot = new BeamtenBot(prop.getDebugMode(), prop.getBotNick());
+		bot.setVerbose(prop.getDebugMode());
 		bot.connect(prop.getIrcHostname(), prop.getIrcPort(), prop.getIrcPassword());
 		
 		// Join Channels
