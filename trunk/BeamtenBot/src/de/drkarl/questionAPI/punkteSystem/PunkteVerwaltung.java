@@ -1,7 +1,7 @@
 package de.drkarl.questionAPI.punkteSystem;
 
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -41,7 +41,8 @@ public class PunkteVerwaltung {
 	
 	 public void writeToXML(){
 		 try {
-				BufferedWriter out = new BufferedWriter(new FileWriter("PunkteVerwaltung.xml"));
+				//BufferedWriter out = new BufferedWriter(new FileWriter("PunkteVerwaltung.xml"));
+			 	BufferedWriter out = new BufferedWriter(new FileWriter(new File(this.getClass().getClassLoader().getResource("PunkteVerwaltung.xml").getFile())));
 				out.write(this.toXML());
 				out.close();
 			} catch (IOException e) {
@@ -52,7 +53,8 @@ public class PunkteVerwaltung {
 	 public void initParse(){
 		 	this.userList = new LinkedList<User>();
 		 	try{
-			InputSource in = new InputSource(new FileInputStream("PunkteVerwaltung.xml"));
+			//InputSource in = new InputSource(new FileInputStream("PunkteVerwaltung.xml"));
+		 	InputSource in = new InputSource(this.getClass().getClassLoader().getResourceAsStream("PunkteVerwaltung.xml"));
 			Document doc = new SAXBuilder().build(in);
 			Element root = doc.getRootElement();
 			List<Element> elementList = root.getChildren("user");
