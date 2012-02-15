@@ -15,6 +15,13 @@ import de.hof.mainbot.helpers.FileIO;
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 import de.stefan1200.jts3serverquery.TeamspeakActionListener;
 
+/**
+ * Stellt einen Bot zur TS3-Channelabfrage zur Verfügung. Abfrage erfolgt mit einer Channelnachricht des 
+ * Formats "-ts".
+ * @author Michael
+ * @version 0.2
+ *
+ */
 public class TeamspeakBot extends JTS3ServerQuery implements Observer, TeamspeakActionListener{
 	// Konstanten
 	public static final String TS3_ACTIVE_CHANNEL_QUERY_COMMAND = "-ts";
@@ -36,6 +43,7 @@ public class TeamspeakBot extends JTS3ServerQuery implements Observer, Teamspeak
 	private boolean isConnectionEstablished = false;
 	private boolean TS_DEBUG = false;
 	private KeepAliveTask keepAlive;
+	private Thread keepAliveThread;
 	
 	// User zu Channel
 	HashMap<Integer, Integer> userToChannel;
@@ -91,8 +99,8 @@ public class TeamspeakBot extends JTS3ServerQuery implements Observer, Teamspeak
 	 */
 	private void keepConnectionAlive() {
 		keepAlive = new KeepAliveTask(this, 480, TS_DEBUG);
-		Thread t = new Thread(keepAlive);
-		t.start();		
+		keepAliveThread = new Thread(keepAlive);
+		keepAliveThread.start();		
 	}
 
 	/**
@@ -178,7 +186,7 @@ public class TeamspeakBot extends JTS3ServerQuery implements Observer, Teamspeak
 		// Verbindung prüfen
 		if(!this.isConnected() || !this.isConnectionEstablished){
 			this.mainBot.sendMessage(channel, Colors.RED + Colors.BOLD + "Fehler: Keine Verbindung zum TS3 vorhanden");
-			return;
+			if(!this.reconnect())return;
 		}
 		// Teamspeak IP ausgeben
 		this.mainBot.sendMessage(channel, Colors.BLUE + Colors.BOLD + Colors.UNDERLINE + "TS3-IP: " + Colors.NORMAL + Colors.UNDERLINE + Colors.BLUE + cnProp.getTs3IpInternet());
@@ -264,6 +272,10 @@ public class TeamspeakBot extends JTS3ServerQuery implements Observer, Teamspeak
 		}
 	}
 	
+	/**
+	 * Wird aufgerufen, wenn ein TS-Client den Server verlässt.
+	 * @param clid	Client ID
+	 */
 	private void clientLeft(Integer clid) {
 		// UserToChannel updaten
 		this.userToChannel.remove(clid);
@@ -320,10 +332,16 @@ public class TeamspeakBot extends JTS3ServerQuery implements Observer, Teamspeak
 		User u = null;
 		if(this.isConnectionEstablished && this.isConnected()){
 			HashMap<String, String> info = this.getInfo(JTS3ServerQuery.INFOMODE_CLIENTINFO, clid);
-			String nick = info.get("client_nickname");
-			u = new User();
-			u.setId(clid);
-			u.setNick(nick);
+			if (info != null) {
+				String nick = info.get("client_nickname");
+				u = new User();
+				u.setId(clid);
+				u.setNick(nick);
+			} else {
+				System.out.println(this.getLastError());
+				System.out.println("Keine aktive Verbindung zum TS3-Server vorhanden!");
+				this.isConnectionEstablished = this.reconnect();
+			}
 		} else {
 			System.out.println("Keine aktive Verbindung zum TS3-Server vorhanden!");
 		}
@@ -339,12 +357,61 @@ public class TeamspeakBot extends JTS3ServerQuery implements Observer, Teamspeak
 		Channel c = null;
 		if(this.isConnectionEstablished && this.isConnected()){
 			HashMap<String, String> info = this.getInfo(JTS3ServerQuery.INFOMODE_CHANNELINFO, ctid);
-			String name = info.get("channel_name");
-			c = new Channel(name);
+			if (info != null) {
+				String name = info.get("channel_name");
+				c = new Channel(name);
+			} else {
+				System.out.println(this.getLastError());
+				System.out.println("Keine aktive Verbindung zum TS3-Server vorhanden!");
+				this.isConnectionEstablished = this.reconnect();
+			}
 		} else {
 			System.out.println("Keine aktive Verbindung zum TS3-Server vorhanden!");
 		}
 		return c;
+	}
+	
+	/**
+	 * Versucht, die Serverquery-Verbindung zum TS3-Server wiederherzustellen.
+	 * @return
+	 */
+	private boolean reconnect(){
+		System.out.println("Versuche Verbindung wieder aufzubauen.");
+		// HashMaps zurücksetzen
+		userToChannel = new HashMap<Integer, Integer>();
+		users = new HashMap<Integer, User>();
+		channels = new HashMap<Integer, String>();
+		// Konfigurationsdatei einlesen
+		if(!this.readConfiguration(CONFIG_FILENAME)){
+			System.out.println("Fehler beim Einlesen der Konfiguration!");
+		} else {
+			// Konfigurationsdatei parsen
+			cnProp = new ConnectionProperties();
+			if(!cnProp.parseFromProperties(prop)){
+				System.out.println("Fehler beim Parsen der Konfiguration!");
+			} else {
+				this.isConfigOK = true;
+				this.TS_DEBUG = cnProp.getDebugMode();
+			}
+		}
+		if(isConfigOK){
+			// Zum Teamspeak-Server verbinden
+			boolean success = this.connectAndLogin();
+			if(success){
+				// ActionListener registieren
+				this.setTeamspeakActionListener(this);
+				// Eventnotifications registrieren
+				if(this.registerForTS3Events()){
+					// Verbindung erfolgreich aufgebaut
+					this.isConnectionEstablished = true;
+					System.out.println("Verbindung zum TS3-Server erfolgreich hergestellt!");
+					// Keepalive-Signale sende
+					this.keepConnectionAlive();
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 }

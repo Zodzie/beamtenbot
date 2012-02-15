@@ -6,6 +6,7 @@ import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 
 import de.drkarl.questionAPI.FragenBot;
+import de.eidotter.bots.teatimerbot.TeaTimerBot;
 import de.eidotter.bots.ts3bot.TeamspeakBot;
 
 public class BotMain {
@@ -20,6 +21,7 @@ public class BotMain {
 		//TimeBot tBot = new TimeBot(bot);
 		FragenBot fBot = new FragenBot(bot);
 		TeamspeakBot tsBot = new TeamspeakBot(bot);
+		TeaTimerBot teaBot = new TeaTimerBot(bot);
 		//bot.registerObserver(tBot);
 	}
 
