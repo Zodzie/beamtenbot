@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 
+import de.drkarl.questionAPI.FragenBot;
+
 public class BotMain {
 
 	public static void main(String[] args) throws NickAlreadyInUseException, IOException, IrcException {
@@ -14,7 +16,8 @@ public class BotMain {
 		bot.joinChannel("#test");
 		
 		
-		TimeBot tBot = new TimeBot(bot);
+		//TimeBot tBot = new TimeBot(bot);
+		FragenBot fBot = new FragenBot(bot);
 		//bot.registerObserver(tBot);
 	}
 
