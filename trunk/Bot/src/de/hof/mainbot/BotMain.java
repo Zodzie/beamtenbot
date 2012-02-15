@@ -12,10 +12,11 @@ import de.eidotter.bots.ts3bot.TeamspeakBot;
 public class BotMain {
 
 	public static void main(String[] args) throws NickAlreadyInUseException, IOException, IrcException {
-		Bot bot = Bot.getInstance("MBot");		
+		Bot bot = Bot.getInstance("bot");		
 		bot.setVerbose(true);
 		bot.connect("h1930837.stratoserver.net", 6667, "honhon");
-		bot.joinChannel("#test");
+		bot.joinChannel("#lancenter");
+		bot.joinChannel("#beamtendisco");
 		
 		
 		//TimeBot tBot = new TimeBot(bot);

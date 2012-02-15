@@ -42,7 +42,7 @@ public class PunkteVerwaltung {
 	
 	 public void writeToXML(){
 		 try {
-				BufferedWriter out = new BufferedWriter(new FileWriter("PunkteVerwaltung.xml"));
+			 BufferedWriter out = new BufferedWriter(de.hof.mainbot.helpers.FileIO.getFileWriter(("PunkteVerwaltung.xml")));
 			 	//BufferedWriter out = new BufferedWriter(new FileWriter(new File(this.getClass().getClassLoader().getResource("PunkteVerwaltung.xml").getFile())));
 				out.write(this.toXML());
 				out.close();
@@ -54,7 +54,7 @@ public class PunkteVerwaltung {
 	 public void initParse(){
 		 	this.userList = new LinkedList<User>();
 		 	try{
-			InputSource in = new InputSource(new FileInputStream("PunkteVerwaltung.xml"));
+		 		InputSource in = new InputSource(de.hof.mainbot.helpers.FileIO.getFileInputStream(("PunkteVerwaltung.xml")));
 		 	//InputSource in = new InputSource(this.getClass().getClassLoader().getResourceAsStream("PunkteVerwaltung.xml"));
 			Document doc = new SAXBuilder().build(in);
 			Element root = doc.getRootElement();
