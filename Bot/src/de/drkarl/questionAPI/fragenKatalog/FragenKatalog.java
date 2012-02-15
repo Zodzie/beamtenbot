@@ -1,10 +1,8 @@
 package de.drkarl.questionAPI.fragenKatalog;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +16,8 @@ import org.jdom.input.SAXBuilder;
 import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.PircBot;
 import org.xml.sax.InputSource;
+
+import de.hof.mainbot.helpers.FileIO;
 
 public class FragenKatalog {
 	
@@ -57,7 +57,7 @@ public class FragenKatalog {
 	  */
 	 public void writeToXML(){
 		 try {
-				BufferedWriter out = new BufferedWriter(new FileWriter("FragenKatalog.xml"));
+				BufferedWriter out = new BufferedWriter(de.hof.mainbot.helpers.FileIO.getFileWriter(("FragenKatalog.xml")));
 			 	//BufferedWriter out = new BufferedWriter(new FileWriter(new File(this.getClass().getClassLoader().getResource("FragenKatalog.xml").getFile())));
 			 	out.write(this.toXML());
 				out.close();
@@ -72,7 +72,7 @@ public class FragenKatalog {
 	 public void initParse(){
 		 try {
 			 	this.fragen = new LinkedList<Frage>();
-				InputSource in = new InputSource(new FileInputStream("FragenKatalog.xml"));
+			 	InputSource in = new InputSource(de.hof.mainbot.helpers.FileIO.getFileInputStream(("FragenKatalog.xml")));
 			 	//InputSource in = new InputSource(this.getClass().getClassLoader().getResourceAsStream("FragenKatalog.xml"));
 				Document doc = new SAXBuilder().build(in);
 				Element root = doc.getRootElement();
@@ -104,14 +104,15 @@ public class FragenKatalog {
 	 
 	 public void addQuestion(String message,String sender,PircBot myBot) {
 			//überprüfen des message Pattern
-			Pattern p = Pattern.compile("addQuestion \"[\\wäÄöÖüÜß\\\\?\\s\\\\.\\\\-\\\\*\\\\']+\" \"[\\wäÄöÖüÜß\\\\?\\s\\\\.\\\\-\\\\*\\\\']+\"");
+			Pattern p = Pattern.compile("-addQuestion \"[\\wäÄöÖüÜß\\\\?\\s\\\\.\\\\-\\\\*\\\\']+\" \"[\\wäÄöÖüÜß\\\\?\\s\\\\.\\\\-\\\\*\\\\']+\"");
 			Matcher m = p.matcher(message);
 			boolean meetRegEx = m.matches();
+			String[] st = message.split("\"");
+			Frage frage = null;
+			LinkedList<Antwort> antworten= new LinkedList<Antwort>();
 			if(meetRegEx){
 				//String der message aufteilen und in richtige Objekte packen
-				String[] st = message.split("\"");
-				Frage frage = null;
-				LinkedList<Antwort> antworten= new LinkedList<Antwort>();
+				
 				int counter = 0;
 				for (String string : st) {
 					if(counter==1){
@@ -136,7 +137,7 @@ public class FragenKatalog {
 				}
 				this.writeToXML();
 				myBot.sendMessage(sender, Colors.GREEN +  "Frage hinzugefügt");
-			}else{
+			}else if(st[0].equals("-addQuestion ")){
 				myBot.sendMessage(sender, Colors.BOLD + Colors.RED +  "Falsche Syntax --> addQuestion \"xx\" \"yy\"");
 			}
 		}
