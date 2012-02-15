@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<punkteVerwaltung>
+<user>
+<name>karl</name>
+<punkte>35</punkte>
+</user>
+<user>
+<name>basti</name>
+<punkte>174</punkte>
+</user>
+<user>
+<name>max</name>
+<punkte>18</punkte>
+</user>
+<user>
+<name>sebi</name>
+<punkte>1</punkte>
+</user>
+<user>
+<name>maxi</name>
+<punkte>1</punkte>
+</user>
+<user>
+<name>michi</name>
+<punkte>1</punkte>
+</user>
+</punkteVerwaltung>
