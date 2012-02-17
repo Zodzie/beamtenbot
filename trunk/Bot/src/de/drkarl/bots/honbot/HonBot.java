@@ -16,17 +16,21 @@ public class HonBot implements Observer {
 		mainBot.registerObserver(this);
 	}
 
-	@Override
+	/**
+	 * sendet eine HoN-Benachrichtigung an alle User im #lancenter
+	 */
 	public void updateOnMessage(String channel, String sender, String login,
 			String hostname, String message) {
 		if(message.equalsIgnoreCase("-hon")){
 			User users[] = mainBot.getUsers("#lancenter");
 			StringBuilder sb = new StringBuilder();
 			sb.append(sender+" möchte eine HoN spielen: ");
+			//liste der User in string adden
 			for (User user : users) {
 				if(!user.getNick().contains("bot")&&!user.getNick().equals(sender)){
 					sb.append(user.getNick() +" ");
 				}
+				//basti extrabenachtichtigung
 				if(user.getNick().equals("basti")&&!sender.equals("basti")){
 					mainBot.sendMessage("basti", sender+" möchte eine HoN spielen");
 				}
