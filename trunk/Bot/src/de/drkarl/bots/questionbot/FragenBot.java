@@ -1,13 +1,13 @@
-package de.drkarl.questionAPI;
+package de.drkarl.bots.questionbot;
 
 import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.PircBot;
 
-import de.drkarl.questionAPI.fragenKatalog.Antwort;
-import de.drkarl.questionAPI.fragenKatalog.Frage;
-import de.drkarl.questionAPI.fragenKatalog.FragenKatalog;
-import de.drkarl.questionAPI.punkteSystem.PunkteVerwaltung;
-import de.drkarl.questionAPI.punkteSystem.User;
+import de.drkarl.bots.questionbot.fragenKatalog.Antwort;
+import de.drkarl.bots.questionbot.fragenKatalog.Frage;
+import de.drkarl.bots.questionbot.fragenKatalog.FragenKatalog;
+import de.drkarl.bots.questionbot.punkteSystem.PunkteVerwaltung;
+import de.drkarl.bots.questionbot.punkteSystem.User;
 import de.hof.mainbot.Bot;
 
 public class FragenBot implements de.hof.mainbot.Observer {
