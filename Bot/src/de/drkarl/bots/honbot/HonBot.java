@@ -24,10 +24,10 @@ public class HonBot implements Observer {
 			StringBuilder sb = new StringBuilder();
 			sb.append(sender+" möchte eine HoN spielen: ");
 			for (User user : users) {
-				if(!user.getNick().contains("bot")){
-				sb.append(user.getNick() +" ");
+				if(!user.getNick().contains("bot")&&!user.getNick().equals(sender)){
+					sb.append(user.getNick() +" ");
 				}
-				if(user.getNick().equals("basti")){
+				if(user.getNick().equals("basti")&&!sender.equals("basti")){
 					mainBot.sendMessage("basti", sender+" möchte eine HoN spielen");
 				}
 			}
