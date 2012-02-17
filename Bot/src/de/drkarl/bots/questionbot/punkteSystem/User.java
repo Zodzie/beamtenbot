@@ -1,4 +1,4 @@
-package de.drkarl.questionAPI.punkteSystem;
+package de.drkarl.bots.questionbot.punkteSystem;
 
 public class User {
 

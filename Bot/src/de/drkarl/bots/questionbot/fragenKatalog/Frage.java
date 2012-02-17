@@ -1,4 +1,4 @@
-package de.drkarl.questionAPI.fragenKatalog;
+package de.drkarl.bots.questionbot.fragenKatalog;
 
 import java.util.LinkedList;
 
