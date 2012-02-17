@@ -29,7 +29,7 @@ public class HonBot implements Observer {
 			for (User user : users) {
 				if(!user.getNick().contains("bot")&&!user.getNick().equals(sender)){
 					if(user.getNick().startsWith("~")){
-						sb.append(user.getNick().substring(1));
+						sb.append(user.getNick().substring(1) +" ");
 					}else{
 						sb.append(user.getNick() +" ");
 					}
