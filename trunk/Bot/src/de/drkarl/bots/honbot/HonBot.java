@@ -28,7 +28,11 @@ public class HonBot implements Observer {
 			//liste der User in string adden
 			for (User user : users) {
 				if(!user.getNick().contains("bot")&&!user.getNick().equals(sender)){
-					sb.append(user.getNick() +" ");
+					if(user.getNick().startsWith("~")){
+						sb.append(user.getNick().substring(1));
+					}else{
+						sb.append(user.getNick() +" ");
+					}
 				}
 				//basti extrabenachtichtigung
 				if(user.getNick().equals("basti")&&!sender.equals("basti")){
