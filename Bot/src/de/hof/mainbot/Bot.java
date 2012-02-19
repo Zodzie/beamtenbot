@@ -33,9 +33,8 @@ public class Bot extends PircBot implements Observable{
 	// DEBUG-Modus
 	private static boolean DEBUG;
 	
-	private Bot(String name) throws NickAlreadyInUseException, IOException, IrcException{
+	private Bot() throws NickAlreadyInUseException, IOException, IrcException{
 		this.observers = new ArrayList<Observer>();
-		this.setName(name);
 		this.settings = new BotProperties(PROPERTIES_FILENAME);
 		// Einstellungen setzen
 		this.setName(this.settings.getString(KEY_NAME));
@@ -64,11 +63,11 @@ public class Bot extends PircBot implements Observable{
 		}
 	}
 	
-	public static Bot getInstance(String name) throws NickAlreadyInUseException, IOException, IrcException{
+	public static Bot getInstance() throws NickAlreadyInUseException, IOException, IrcException{
 		if(instance != null){
 			return instance;
 		} else {
-			return new Bot(name);
+			return new Bot();
 		}
 	}
 
