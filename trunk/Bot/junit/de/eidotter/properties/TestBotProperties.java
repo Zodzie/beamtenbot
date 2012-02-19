@@ -1,4 +1,4 @@
-package de.hof.junit.helpers;
+package de.eidotter.properties;
 
 import static org.junit.Assert.*;
 
