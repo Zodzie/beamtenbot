@@ -19,7 +19,7 @@ import de.stefan1200.jts3serverquery.TeamspeakActionListener;
  * Stellt einen Bot zur TS3-Channelabfrage zur Verfügung. Abfrage erfolgt mit einer Channelnachricht des 
  * Formats "-ts".
  * @author Michael
- * @version 0.2
+ * @version 0.2.1
  *
  */
 public class TeamspeakBot extends JTS3ServerQuery implements Observer, TeamspeakActionListener{
@@ -376,6 +376,8 @@ public class TeamspeakBot extends JTS3ServerQuery implements Observer, Teamspeak
 	 * @return
 	 */
 	private boolean reconnect(){
+		System.out.println("Schließe bestehende Verbindung.");
+		this.closeTS3Connection();
 		System.out.println("Versuche Verbindung wieder aufzubauen.");
 		// HashMaps zurücksetzen
 		userToChannel = new HashMap<Integer, Integer>();
