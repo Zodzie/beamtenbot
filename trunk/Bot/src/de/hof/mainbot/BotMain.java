@@ -13,7 +13,7 @@ import de.eidotter.bots.ts3bot.TeamspeakBot;
 public class BotMain {
 
 	public static void main(String[] args) throws NickAlreadyInUseException, IOException, IrcException {
-		Bot bot = Bot.getInstance("mbot");		
+		Bot bot = Bot.getInstance();		
 		
 		// Einhängen der Unterbots
 		FragenBot fBot = new FragenBot(bot);
