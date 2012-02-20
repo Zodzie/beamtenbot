@@ -88,11 +88,12 @@ public class FragenBot implements de.hof.mainbot.Observer {
 	}
 	
 	public void voteForNextQuestion(String message, String channel,String sender){
-		if(message.equalsIgnoreCase("-fn")&&message.equalsIgnoreCase("-FrageNext")){
+		if(message.equalsIgnoreCase("-fn")||message.equalsIgnoreCase("-FrageNext")){
 			boolean userNotInList = true;
 			for (User user : voteForNextQuestion) {
 				if(user.getName().equalsIgnoreCase(sender)){
 					userNotInList = false;
+					System.out.println("Bereits abgestimmt");
 				}
 			}
 			//füge user in Liste der User die für eine neue Frage voten.. bei 3 mache neue Frage
@@ -103,6 +104,8 @@ public class FragenBot implements de.hof.mainbot.Observer {
 					askQuestion(message, channel, true);
 				}else{
 					voteForNextQuestion.addLast(new User(sender));
+					bot.sendMessage(channel,  Colors.RED + voteForNextQuestion.size()+" Votes für eine neue Frage: "+ (3-voteForNextQuestion.size())+" Votes verbleiben");
+					
 				}
 			}
 		}
