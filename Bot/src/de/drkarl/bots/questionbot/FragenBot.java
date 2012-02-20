@@ -1,5 +1,7 @@
 package de.drkarl.bots.questionbot;
 
+import java.util.LinkedList;
+
 import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.PircBot;
 
@@ -17,6 +19,7 @@ public class FragenBot implements de.hof.mainbot.Observer {
 	PunkteVerwaltung punkteVerwaltung;
 	Frage aktuelleFrage;
 	boolean solved = true;
+	LinkedList<User> voteForNextQuestion;
 	
 	
 
@@ -26,6 +29,7 @@ public class FragenBot implements de.hof.mainbot.Observer {
 		bot.registerObserver(this);
 		this.punkteVerwaltung = new PunkteVerwaltung();
 		this.fragenKatalog = new FragenKatalog();
+		this.voteForNextQuestion = new LinkedList<User>();
 	}
 
 	public FragenKatalog getFragenKatalog() {
@@ -81,6 +85,27 @@ public class FragenBot implements de.hof.mainbot.Observer {
 		askQuestion(message, channel, false);
 		checkAnswer(message, channel, sender);
 		printPunkteVerwaltung(message, channel);
+	}
+	
+	public void voteForNextQuestion(String message, String channel,String sender){
+		if(message.equalsIgnoreCase("-fn")&&message.equalsIgnoreCase("-FrageNext")){
+			boolean userNotInList = true;
+			for (User user : voteForNextQuestion) {
+				if(user.getName().equalsIgnoreCase(sender)){
+					userNotInList = false;
+				}
+			}
+			//füge user in Liste der User die für eine neue Frage voten.. bei 3 mache neue Frage
+			if(userNotInList){
+				if(voteForNextQuestion.size()+1==3){
+					voteForNextQuestion = new LinkedList<User>();
+					aktuelleFrage = getRandomFrage();
+					askQuestion(message, channel, true);
+				}else{
+					voteForNextQuestion.addLast(new User(sender));
+				}
+			}
+		}
 	}
 	
 	public void checkAnswer(String message, String channel, String sender){
@@ -143,7 +168,7 @@ public class FragenBot implements de.hof.mainbot.Observer {
 			String hostname, String message) {
 		questionAndAnswer(message, channel, sender);
 		getTip(message, channel, sender);
-		
+		voteForNextQuestion(message, channel, sender);
 	}
 
 	@Override
