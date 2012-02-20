@@ -137,8 +137,12 @@ public class FragenBot implements de.hof.mainbot.Observer {
 		if(message.equalsIgnoreCase("-fh")||message.equalsIgnoreCase("-FrageHelp")){
 			StringBuilder sb = new StringBuilder();
 			sb.append(aktuelleFrage.antworten.get(0).getAntwort().charAt(0));
-			for (int i = 0; i < aktuelleFrage.antworten.get(0).getAntwort().length()-2; i++) {
-				sb.append("*");
+			for (int i = 1; i < aktuelleFrage.antworten.get(0).getAntwort().length()-1; i++) {
+				if((aktuelleFrage.antworten.get(0).getAntwort().charAt(i))==' '){
+					sb.append(" ");
+				}else{
+					sb.append("*");
+				}
 			}
 			sb.append(aktuelleFrage.antworten.get(0).getAntwort().charAt(aktuelleFrage.antworten.get(0).getAntwort().length()-1));
 			bot.sendMessage(channel,  Colors.RED + sb.toString());			
