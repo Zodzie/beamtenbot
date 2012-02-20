@@ -1,9 +1,10 @@
 package de.drkarl.bots.honbot;
 
+import java.util.HashMap;
+
 import org.jibble.pircbot.User;
 
 import de.hof.mainbot.Bot;
-import de.hof.mainbot.Observable;
 import de.hof.mainbot.Observer;
 
 public class HonBot implements Observer {
@@ -60,6 +61,24 @@ public class HonBot implements Observer {
 	public void updateOnDisconnect() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String helpGetFunction() {
+		return null;
+		
+	}
+
+	@Override
+	public HashMap<String, String> helpGetCommandos() {
+		return null;
+		
+	}
+
+	@Override
+	public HashMap<String, String> helpGetPrivateCommandos() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

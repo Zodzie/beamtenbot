@@ -20,6 +20,7 @@ public class BotMain {
 		HonBot honBot = new HonBot(bot);
 		TeamspeakBot tsBot = new TeamspeakBot(bot);
 		TeaTimerBot teaBot = new TeaTimerBot(bot);
+		TimeBot tBot = new TimeBot(bot);
 		
 	}
 

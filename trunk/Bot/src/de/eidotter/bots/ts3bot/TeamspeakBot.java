@@ -34,6 +34,7 @@ public class TeamspeakBot extends JTS3ServerQuery implements Observer, Teamspeak
 	protected static final String CONFIG_KEY_TS3_IP_INTERNET = "ts3_ip_internet";
 	protected static final String CONFIG_KEY_DEBUG_MODE = "debug_mode";
 	private static final String CONFIG_FILENAME = "ts3_serverquery.properties";
+	private static final String BOT_NAME = "TeamspeakBot";
 	
 	// Instanzvariablen
 	private Bot mainBot;
@@ -414,6 +415,23 @@ public class TeamspeakBot extends JTS3ServerQuery implements Observer, Teamspeak
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public String helpGetFunction() {
+		return BOT_NAME;
+	}
+
+	@Override
+	public HashMap<String, String> helpGetCommandos() {
+		HashMap<String, String> commandos = new HashMap<String, String>();
+		commandos.put("-ts", "Gibt alle aktiven Channels des TS3 aus.");
+		return commandos;
+	}
+
+	@Override
+	public HashMap<String, String> helpGetPrivateCommandos() {
+		return null;
 	}
 	
 }

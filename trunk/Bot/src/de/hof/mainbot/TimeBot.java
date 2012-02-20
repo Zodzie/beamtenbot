@@ -1,6 +1,7 @@
 package de.hof.mainbot;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Beispielhafte Implementierung eines Bots, der in den MainBot
@@ -9,6 +10,7 @@ import java.util.Date;
  *
  */
 public class TimeBot implements Observer {
+	public static final String BOT_NAME = "TimeBot";
 	Bot mainBot;
 	
 	public TimeBot(Bot mainBot){
@@ -40,6 +42,27 @@ public class TimeBot implements Observer {
 	@Override
 	public void updateOnDisconnect() {
 
+	}
+
+	@Override
+	public String helpGetFunction() {
+		// Botnamen zurückgeben
+		return BOT_NAME;
+		
+	}
+
+	@Override
+	public HashMap<String, String> helpGetCommandos() {
+		HashMap<String, String> commandos = new HashMap<String, String>();
+		commandos.put("-time", "Gibt die aktuelle Uhrzeit zurück.");
+		return commandos;
+		
+	}
+
+	@Override
+	public HashMap<String, String> helpGetPrivateCommandos() {
+		// Null zurückgeben, da Bot keine Kommandos bei privaten Nachrichten hat.
+		return null;
 	}
 
 }
