@@ -1,5 +1,6 @@
 package de.drkarl.bots.questionbot;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.jibble.pircbot.Colors;
@@ -194,5 +195,23 @@ public class FragenBot implements de.hof.mainbot.Observer {
 	public void updateOnDisconnect() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String helpGetFunction() {
+		return null;
+		
+	}
+
+	@Override
+	public HashMap<String, String> helpGetCommandos() {
+		return null;
+		
+	}
+
+	@Override
+	public HashMap<String, String> helpGetPrivateCommandos() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
