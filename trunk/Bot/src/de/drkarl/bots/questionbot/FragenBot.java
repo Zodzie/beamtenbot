@@ -98,7 +98,24 @@ public class FragenBot implements de.hof.mainbot.Observer {
 			}
 	}
 	
+	/**
+	 * Sendet einen Hinweis auf die Richtige Antwort zur aktuellen Frage
+	 * @param message
+	 * @param channel
+	 * @param sender
+	 */
 	
+	public void getTip(String message, String channel, String sender){
+		if(message.equalsIgnoreCase("-fh")||message.equalsIgnoreCase("-FrageHelp")){
+			StringBuilder sb = new StringBuilder();
+			sb.append(aktuelleFrage.antworten.get(0).getAntwort().charAt(0));
+			for (int i = 0; i < aktuelleFrage.antworten.get(0).getAntwort().length()-2; i++) {
+				sb.append("*");
+			}
+			sb.append(aktuelleFrage.antworten.get(0).getAntwort().charAt(aktuelleFrage.antworten.get(0).getAntwort().length()-1));
+			bot.sendMessage(channel,  Colors.RED + sb.toString());			
+		}
+	}
 
 	public void printPunkteVerwaltung(String message, String channel){
 		if(message.equalsIgnoreCase("-stats")||message.equalsIgnoreCase("-s")){
@@ -124,7 +141,8 @@ public class FragenBot implements de.hof.mainbot.Observer {
 	@Override
 	public void updateOnMessage(String channel, String sender, String login,
 			String hostname, String message) {
-		questionAndAnswer(message, channel, sender	);
+		questionAndAnswer(message, channel, sender);
+		getTip(message, channel, sender);
 		
 	}
 

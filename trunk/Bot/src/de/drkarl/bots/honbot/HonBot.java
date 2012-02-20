@@ -47,7 +47,6 @@ public class HonBot implements Observer {
 	@Override
 	public void updateOnPrivateMessage(String sender, String login,
 			String hostname, String message) {
-		// TODO Auto-generated method stub
 		
 	}
 
