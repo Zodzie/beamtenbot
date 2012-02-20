@@ -2,8 +2,11 @@ package de.hof.mainbot;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
+import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.PircBot;
@@ -24,6 +27,7 @@ public class Bot extends PircBot implements Observable{
 	private static final String KEY_CHANNELS = "channels";
 	// Logging-Prefix
 	private static final String LOG_PREFIX = "MainBot";
+	private static final String HELP_MESSAGE = Colors.BLUE + Colors.BOLD + "Verfügbare Kommandos und Bots:";
 	// Liste mit allen Observern
 	private List<Observer> observers;
 	// Singleton-Instanz
@@ -88,15 +92,58 @@ public class Bot extends PircBot implements Observable{
 	@Override
 	protected void onMessage(String channel, String sender, String login,
 			String hostname, String message) {
-		this.notifyOnMessage(channel, sender, login, hostname, message);
+		if(message.equals("-help")){
+			this.printHelp(false, channel, sender);
+		} else {
+			this.notifyOnMessage(channel, sender, login, hostname, message);
+		}
 	}
 
 
+	/**
+	 * Gibt die Helpnachrichten aus.
+	 * @param privateMessage	boolean
+	 * @param channel	String
+	 * @param sender	String
+	 */
+	private void printHelp(boolean privateMessage, String channel, String sender) {
+		if(privateMessage){
+			this.sendMessage(sender, HELP_MESSAGE);
+		} else {
+			this.sendMessage(channel, HELP_MESSAGE);
+		}
+		for (Observer ob : this.observers) {
+			HashMap<String, String> commandos = null;
+			if(privateMessage){
+				commandos = ob.helpGetPrivateCommandos();
+				if(commandos != null){
+					// Bot hat private Kommandos
+					this.sendMessage(sender, ob.helpGetFunction());
+					for (Entry<String, String> entry : commandos.entrySet()) {
+						this.sendMessage(sender, "   " + entry.getKey() + " : " + entry.getValue());
+					}
+				}
+			} else {
+				commandos = ob.helpGetCommandos();
+				if(commandos != null){
+					// Bot hat public Kommandos
+					this.sendMessage(channel, ob.helpGetFunction());
+					for (Entry<String, String> entry : commandos.entrySet()) {
+						this.sendMessage(channel, "   " + entry.getKey() + " : " + entry.getValue());
+					}
+				}
+			}
+		}
+	}
 
 	@Override
 	protected void onPrivateMessage(String sender, String login,
 			String hostname, String message) {
-		this.notifyOnPrivateMessage(sender, login, hostname, message);
+		if(message.equals("-help")){
+			this.printHelp(true, null, sender);
+		} else {
+			this.notifyOnPrivateMessage(sender, login, hostname, message);
+		}
 	}
 
 

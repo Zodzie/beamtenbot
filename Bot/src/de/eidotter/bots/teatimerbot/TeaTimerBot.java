@@ -1,5 +1,6 @@
 package de.eidotter.bots.teatimerbot;
 
+import java.util.HashMap;
 import java.util.Timer;
 
 import de.hof.mainbot.Bot;
@@ -15,6 +16,7 @@ import de.hof.mainbot.Observer;
  * @version 0.1
  */
 public class TeaTimerBot implements Observer {
+	public static final String BOT_NAME = "TeaTimer";
 	private Bot mainBot;
 	private Timer timer = new Timer(true);
 	private static final String TIMER_COMMANDO = "-timer";
@@ -68,6 +70,23 @@ public class TeaTimerBot implements Observer {
 	@Override
 	public void updateOnDisconnect() {
 
+	}
+
+	@Override
+	public String helpGetFunction() {
+		return BOT_NAME;
+	}
+
+	@Override
+	public HashMap<String, String> helpGetCommandos() {
+		return null;
+	}
+
+	@Override
+	public HashMap<String, String> helpGetPrivateCommandos() {
+		HashMap<String, String> commandos = new HashMap<String, String>();
+		commandos.put(TIMER_COMMANDO + " <Name> <Minuten>", "Startet einen <Minuten>-Timer für <Name>. Bsp.: -timer Pizza 12");
+		return commandos;
 	}
 
 }
