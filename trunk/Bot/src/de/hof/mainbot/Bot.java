@@ -145,8 +145,23 @@ public class Bot extends PircBot implements Observable{
 			this.notifyOnPrivateMessage(sender, login, hostname, message);
 		}
 	}
+	
+	
 
 
+
+	@Override
+	protected void onJoin(String channel, String sender, String login,
+			String hostname) {
+		this.notifyOnJoin(channel, sender, login, hostname);
+	}
+
+	public void notifyOnJoin(String channel, String sender, String login,
+			String hostname) {
+		for (Observer o : this.observers) {
+			o.updateOnJoin(channel, sender, login, hostname);
+		}
+	}
 
 	@Override
 	public void registerObserver(Observer o) {

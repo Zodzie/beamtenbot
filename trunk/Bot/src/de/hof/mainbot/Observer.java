@@ -11,6 +11,7 @@ public interface Observer {
 			String hostname, String message);
 	public void updateOnConnect();
 	public void updateOnDisconnect();
+	public void updateOnJoin(String channel, String sender, String login, String hostname);
 	/**
 	 * Gibt den Namen des Bots zurück (z.B. HonBot, TimerBot, TSBot).
 	 * @return	String

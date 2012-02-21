@@ -12,4 +12,5 @@ public interface Observable {
 			String hostname, String message);
 	public void notifyOnConnect();
 	public void notifyOnDisconnect();
+	public void notifyOnJoin(String channel, String sender, String login, String hostname);
 }
