@@ -433,5 +433,12 @@ public class TeamspeakBot extends JTS3ServerQuery implements Observer, Teamspeak
 	public HashMap<String, String> helpGetPrivateCommandos() {
 		return null;
 	}
+
+	@Override
+	public void updateOnJoin(String channel, String sender, String login,
+			String hostname) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

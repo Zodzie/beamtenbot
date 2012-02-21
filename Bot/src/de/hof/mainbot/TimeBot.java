@@ -65,4 +65,11 @@ public class TimeBot implements Observer {
 		return null;
 	}
 
+	@Override
+	public void updateOnJoin(String channel, String sender, String login,
+			String hostname) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

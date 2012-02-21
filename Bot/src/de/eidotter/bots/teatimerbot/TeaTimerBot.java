@@ -89,4 +89,11 @@ public class TeaTimerBot implements Observer {
 		return commandos;
 	}
 
+	@Override
+	public void updateOnJoin(String channel, String sender, String login,
+			String hostname) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

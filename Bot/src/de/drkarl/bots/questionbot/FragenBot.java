@@ -214,4 +214,11 @@ public class FragenBot implements de.hof.mainbot.Observer {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void updateOnJoin(String channel, String sender, String login,
+			String hostname) {
+		// TODO Auto-generated method stub
+		
+	}
 }

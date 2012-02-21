@@ -41,7 +41,7 @@ public class NotifyBot implements Observer {
 			String hostname, String message) {
 		if(message.toLowerCase().startsWith("-tell ")){
 			String[] parts = message.split("\\s+");
-			if(parts.length > 3){
+			if(parts.length > 2){
 				String recipient = parts[1];
 				String rec_message = message.substring(message.indexOf(recipient) + recipient.length() + 1);
 				this.storeMessage(recipient, rec_message, sender);
@@ -92,6 +92,26 @@ public class NotifyBot implements Observer {
 			// Nachrichten löschen
 			this.messages.remove(sender.toLowerCase());
 		}
+	}
+
+
+	@Override
+	public String helpGetFunction() {
+		return BOT_NAME;
+	}
+
+
+	@Override
+	public HashMap<String, String> helpGetCommandos() {
+		return null;
+	}
+
+
+	@Override
+	public HashMap<String, String> helpGetPrivateCommandos() {
+		HashMap<String, String> commandos = new HashMap<String, String>();
+		commandos.put(BOT_HELP_SYNTAX, BOT_HELP);
+		return commandos;
 	}
 
 }
