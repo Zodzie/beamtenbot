@@ -65,13 +65,15 @@ public class HonBot implements Observer {
 
 	@Override
 	public String helpGetFunction() {
-		return null;
+		return "HoNBot";
 		
 	}
 
 	@Override
 	public HashMap<String, String> helpGetCommandos() {
-		return null;
+		HashMap<String, String> help = new HashMap<String,String>();
+		help.put("-hon", "Lädt alle User im #lancenter zu einer HoN ein");
+		return help;
 		
 	}
 
