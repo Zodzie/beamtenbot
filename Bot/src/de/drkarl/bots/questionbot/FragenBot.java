@@ -75,6 +75,7 @@ public class FragenBot implements de.hof.mainbot.Observer {
 	}
 	
 	public Frage getRandomFrage(){
+		voteForNextQuestion = new LinkedList<User>();
 		int randomIndex = getRandomNumber(fragenKatalog.getFragen().size());
 		aktuelleFrage = fragenKatalog.getFragen().get(randomIndex);
 		solved = false;
@@ -88,11 +89,11 @@ public class FragenBot implements de.hof.mainbot.Observer {
 		printPunkteVerwaltung(message, channel);
 	}
 	
-	public void voteForNextQuestion(String message, String channel,String sender){
+	public void voteForNextQuestion(String message, String channel,String hostName){
 		if(message.equalsIgnoreCase("-fn")||message.equalsIgnoreCase("-FrageNext")){
 			boolean userNotInList = true;
 			for (User user : voteForNextQuestion) {
-				if(user.getName().equalsIgnoreCase(sender)){
+				if(user.getName().equalsIgnoreCase(hostName)){
 					userNotInList = false;
 					System.out.println("Bereits abgestimmt");
 				}
@@ -101,15 +102,22 @@ public class FragenBot implements de.hof.mainbot.Observer {
 			if(userNotInList){
 				if(voteForNextQuestion.size()+1==3){
 					voteForNextQuestion = new LinkedList<User>();
+					bot.sendMessage(channel,"Die Lösung war: "+ aktuelleFrage.antworten.getFirst().getAntwort());
 					aktuelleFrage = getRandomFrage();
 					askQuestion(message, channel, true);
 				}else{
-					voteForNextQuestion.addLast(new User(sender));
+					voteForNextQuestion.addLast(new User(hostName));
 					bot.sendMessage(channel,  Colors.RED + voteForNextQuestion.size()+" Votes für eine neue Frage: "+ (3-voteForNextQuestion.size())+" Votes verbleiben");
-					
 				}
 			}
 		}
+	}
+	
+	public void sendMessageToAllChannles(String s){
+		for (String channel : bot.getChannels()) {
+			bot.sendMessage(channel,  s);
+		}
+		
 	}
 	
 	public void checkAnswer(String message, String channel, String sender){
@@ -146,7 +154,7 @@ public class FragenBot implements de.hof.mainbot.Observer {
 				}
 			}
 			sb.append(aktuelleFrage.antworten.get(0).getAntwort().charAt(aktuelleFrage.antworten.get(0).getAntwort().length()-1));
-			bot.sendMessage(channel,  Colors.RED + sb.toString());			
+			bot.sendMessage(channel, Colors.RED + sb.toString() );
 		}
 	}
 
@@ -173,10 +181,10 @@ public class FragenBot implements de.hof.mainbot.Observer {
 
 	@Override
 	public void updateOnMessage(String channel, String sender, String login,
-			String hostname, String message) {
+		String hostname, String message) {
 		questionAndAnswer(message, channel, sender);
 		getTip(message, channel, sender);
-		voteForNextQuestion(message, channel, sender);
+		voteForNextQuestion(message, channel, hostname);
 	}
 
 	@Override
@@ -199,20 +207,25 @@ public class FragenBot implements de.hof.mainbot.Observer {
 
 	@Override
 	public String helpGetFunction() {
-		return null;
+		return "FragenBot";
 		
 	}
 
 	@Override
 	public HashMap<String, String> helpGetCommandos() {
-		return null;
-		
+		HashMap<String, String> help = new HashMap<String,String>();
+		help.put("-f |-frage", "Gibt die aktuelle Frage des Bot aus");
+		help.put("-fh|-frageHelp", "Gibt eine Hilfe zur aktuellen Frage");
+		help.put("-fn|-frageNext", "Vote für eine neue Frage");
+		help.put("-s |-stats", "Vote für eine neue Frage");
+		return help;
 	}
 
 	@Override
 	public HashMap<String, String> helpGetPrivateCommandos() {
-		// TODO Auto-generated method stub
-		return null;
+		HashMap<String, String> help = new HashMap<String,String>();
+		help.put("addQuestion \"<frage>\" \"<antwort>\"", "Fügt dem Fragenkatalog eine Frage hinzu");
+		return help;
 	}
 
 	@Override
