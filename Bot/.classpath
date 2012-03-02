@@ -10,6 +10,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="jdom.jar"/>
 	<classpathentry kind="lib" path="lib/JTS3ServerQuery.jar"/>
+	<classpathentry kind="lib" path="lib/choonbot-0.82.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
