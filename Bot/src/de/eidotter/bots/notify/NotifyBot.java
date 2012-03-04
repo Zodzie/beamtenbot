@@ -1,4 +1,4 @@
-package de.eidotter.bots.notifybot;
+package de.eidotter.bots.notify;
 
 import java.util.ArrayList;
 import java.util.HashMap;

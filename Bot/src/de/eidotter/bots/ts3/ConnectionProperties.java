@@ -1,4 +1,4 @@
-package de.eidotter.bots.ts3bot;
+package de.eidotter.bots.ts3;
 
 import java.util.Properties;
 

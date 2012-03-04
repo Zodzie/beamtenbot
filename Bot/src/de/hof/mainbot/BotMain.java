@@ -7,9 +7,10 @@ import org.jibble.pircbot.NickAlreadyInUseException;
 
 import de.drkarl.bots.honbot.HonBot;
 import de.drkarl.bots.questionbot.FragenBot;
-import de.eidotter.bots.notifybot.NotifyBot;
-import de.eidotter.bots.teatimerbot.TeaTimerBot;
-import de.eidotter.bots.ts3bot.TeamspeakBot;
+import de.eidotter.bots.notify.NotifyBot;
+import de.eidotter.bots.timer.TeaTimerBot;
+import de.eidotter.bots.ts3.TeamspeakBot;
+import de.eidotter.bots.weather.WeatherBot;
 
 public class BotMain {
 
@@ -23,6 +24,7 @@ public class BotMain {
 		TeaTimerBot teaBot = new TeaTimerBot(bot);
 		TimeBot tBot = new TimeBot(bot);
 		NotifyBot nBot = new NotifyBot(bot);
+		WeatherBot wBot = new WeatherBot(bot);
 		
 	}
 
