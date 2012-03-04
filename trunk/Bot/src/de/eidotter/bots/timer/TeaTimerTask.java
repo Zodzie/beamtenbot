@@ -1,4 +1,4 @@
-package de.eidotter.bots.teatimerbot;
+package de.eidotter.bots.timer;
 
 import java.util.TimerTask;
 

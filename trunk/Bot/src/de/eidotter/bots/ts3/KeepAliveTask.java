@@ -1,4 +1,4 @@
-package de.eidotter.bots.ts3bot;
+package de.eidotter.bots.ts3;
 
 import de.stefan1200.jts3serverquery.JTS3ServerQuery;
 

@@ -1,4 +1,4 @@
-package de.eidotter.bots.winampbot;
+package de.eidotter.bots.winamp;
 
 import java.io.IOException;
 import java.util.HashMap;
