@@ -1,0 +1,1 @@
+Extensible IRC-Robot based on [PircBot](http://www.jibble.org/pircbot.php).
